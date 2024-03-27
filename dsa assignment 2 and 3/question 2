@@ -1,0 +1,49 @@
+class ListNode:
+    def __init__(self, x):
+        self.val = x
+        self.next = None
+
+def detectCycle(head):
+    if not head or not head.next:
+        return None
+
+    # Step 1: Initialize slow and fast pointers
+    slow = head
+    fast = head
+
+    # Step 2: Move pointers until they meet
+    while fast and fast.next:
+        slow = slow.next
+        fast = fast.next.next
+        if slow == fast:
+            break
+
+    # Step 3: Check if there's no cycle
+    if not fast or not fast.next:
+        return None
+
+    # Step 4: Move one pointer back to head
+    slow = head
+
+    # Step 5: Move both pointers until they meet again
+    while slow != fast:
+        slow = slow.next
+        fast = fast.next
+
+    # Step 6: Return the node where the cycle begins
+    return slow
+
+# Example usage:
+# Create linked list nodes
+head = ListNode(3)
+head.next = ListNode(2)
+head.next.next = ListNode(0)
+head.next.next.next = ListNode(-4)
+# Create cycle
+head.next.next.next.next = head.next  # pos = 1
+
+cycle_start = detectCycle(head)
+if cycle_start:
+    print("Tail connects to node index", cycle_start.val)
+else:
+    print("No cycle")
